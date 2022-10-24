@@ -14,7 +14,7 @@ from PIL import Image
 from networks import get_model
 from datasets import ImageDataset, Dataset, bbox_iou
 from visualizations import visualize_img, visualize_eigvec, visualize_predictions, visualize_predictions_gt 
-from object_discovery import FORMULA_TC 
+from object_discovery_FORMULA_TokenCut import FORMULA
 import matplotlib.pyplot as plt
 import time
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         help="Select the different type of visualizations.",
     )
 
-    # TokenCut parameters
+    # FORMULA parameters
     parser.add_argument(
         "--which_features",
         type=str,
@@ -124,6 +124,8 @@ if __name__ == "__main__":
     parser.add_argument("--dinoseg_head", type=int, default=4)
 
     args = parser.parse_args()
+
+    weights = multi_scale_weights[args.dataset]['FORMULA-TC']
 
     if args.image_path is not None:
         args.save_predictions = False
@@ -158,12 +160,12 @@ if __name__ == "__main__":
             raise ValueError("DINO-seg can only be applied to tranformer networks.")
         exp_name = f"{args.arch}-{args.patch_size}_dinoseg-head{args.dinoseg_head}"
     else:
-        # Experiment with TokenCut 
-        exp_name = f"TokenCut-{args.arch}"
+        # Experiment with FORMULA 
+        exp_name = f"FORMULA-{args.arch}"
         if "vit" in args.arch:
             exp_name += f"{args.patch_size}_{args.which_features}"
 
-    print(f"Running TokenCut on the dataset {dataset.name} (exp: {exp_name})")
+    print(f"Running FORMULA on the dataset {dataset.name} (exp: {exp_name})")
 
     # Visualization 
     if args.visualize:
@@ -228,9 +230,6 @@ if __name__ == "__main__":
             if "vit"  in args.arch:
                 # Store the outputs of qkv layer from the last attention layer
                 feat_out = {}
-                # def hook_fn_forward_qkv(module, input, output):
-                #     feat_out["qkv"] = output
-                # model._modules["blocks"][-1]._modules["attn"]._modules["qkv"].register_forward_hook(hook_fn_forward_qkv)
                 def hook_fn_forward_qkv(module, input, output):
                     feat_out["qkv"] = output
                 model._modules["blocks"][-1]._modules["attn"]._modules["qkv"].register_forward_hook(hook_fn_forward_qkv)
@@ -268,7 +267,7 @@ if __name__ == "__main__":
                     #     .permute(2, 0, 3, 1, 4)
                     # )
                     qkv = (
-                        (0.3 * feat_out["qkv"] + 0.5 * feat_out["qkv2"] + 0.1 * feat_out["qkv3"] + 0.1 * feat_out["qkv4"])
+                        (weights[0] * feat_out["qkv"] + weights[1] * feat_out["qkv2"] + weights[2] * feat_out["qkv3"] + weights[3] * feat_out["qkv4"])
                         .reshape(nb_im, nb_tokens, 3, nh, -1 // nh)
                         .permute(2, 0, 3, 1, 4)
                     )
@@ -295,9 +294,9 @@ if __name__ == "__main__":
             else:
                 raise ValueError("Unknown model.")
 
-        # ------------ Apply TokenCut ------------------------------------------- 
+        # ------------ Apply FORMULA ------------------------------------------- 
         if not args.dinoseg:
-            pred, objects, foreground, seed , bins, eigenvector= ncut(feats, [w_featmap, h_featmap], scales, init_image_size, args.tau, args.eps, im_name=im_name, no_binary_graph=args.no_binary_graph)
+            pred, objects, foreground, seed , bins, eigenvector= FORMULA(feats, [w_featmap, h_featmap], scales, init_image_size, args.tau, args.eps, im_name=im_name, no_binary_graph=args.no_binary_graph)
             
             if args.visualize == "pred" and args.no_evaluation :
                 image = dataset.load_image(im_name, size_im)

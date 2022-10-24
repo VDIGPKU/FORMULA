@@ -27,7 +27,7 @@ from PIL import Image
 from networks import get_model
 from datasets import ImageDataset, Dataset, bbox_iou
 from visualizations import visualize_fms, visualize_predictions, visualize_seed_expansion
-from object_discovery import FORMULA, detect_box, dino_seg
+from object_discovery_FORMULA_LOST import FORMULA, detect_box, dino_seg
 
 multi_scale_weights={
     'VOC07':{
