@@ -81,10 +81,10 @@ python main_formula_TokenCut.py --dataset COCO20k --set train --arch vit_base
 
 The results of this repository:
 
-|   Method   |   arch   | VOC07 | VOC12 |
-| :--------: | :------: | :---: | :---: |
-| FORMULA-L  | ViT-S/16 | 64.28 | 67.65 |
-| FORMULA-TC | ViT-B/16 | 69.13 | 73.08 |
+|   Method   |   arch   | VOC07 | VOC12 | COCO_20k |
+| :--------: | :------: | :---: | :---: | :------: |
+| FORMULA-L  | ViT-S/16 | 64.28 | 67.65 |  54.04   |
+| FORMULA-TC | ViT-B/16 | 69.13 | 73.08 |  59.57   |
 
 
 
