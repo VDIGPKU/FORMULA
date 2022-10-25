@@ -13,7 +13,7 @@ from PIL import Image
 
 from networks import get_model
 from datasets import ImageDataset, Dataset, bbox_iou
-from visualizations import visualize_img, visualize_eigvec, visualize_predictions, visualize_predictions_gt 
+from visualizations import visualize_eigvec, visualize_predictions 
 from object_discovery_FORMULA_TokenCut import FORMULA
 import matplotlib.pyplot as plt
 import time
@@ -91,6 +91,8 @@ if __name__ == "__main__":
     parser.add_argument("--no_evaluation", action="store_true", help="Compute the evaluation.")
     parser.add_argument("--save_predictions", default=True, type=bool, help="Save predicted bouding boxes.")
 
+    parser.add_argument("--resnet_dilate", type=int, default=2, help="Dilation level of the resnet model.")
+
     # Visualization
     parser.add_argument(
         "--visualize",
@@ -145,7 +147,7 @@ if __name__ == "__main__":
     # Model
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     #device = torch.device('cuda') 
-    model = get_model(args.arch, args.patch_size, device)
+    model = get_model(args.arch, args.patch_size, args.resnet_dilate, device)
 
     # -------------------------------------------------------------------------------------------------------
     # Directories
@@ -321,9 +323,9 @@ if __name__ == "__main__":
         
         if torch.any(ious >= 0.5):
             corloc[im_id] = 1
-        vis_folder = f"{args.output_dir}/{exp_name}"
-        os.makedirs(vis_folder, exist_ok=True)
-        image = dataset.load_image(im_name)
+        # vis_folder = f"{args.output_dir}/{exp_name}"
+        # os.makedirs(vis_folder, exist_ok=True)
+        # image = dataset.load_image(im_name)
         #visualize_predictions(image, pred, vis_folder, im_name)
         #visualize_eigvec(eigenvector, vis_folder, im_name, [w_featmap, h_featmap], scales)
 

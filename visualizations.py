@@ -18,6 +18,7 @@ import skimage.io
 import numpy as np
 import torch.nn as nn
 from PIL import Image
+import scipy
 
 import matplotlib.pyplot as plt
 
@@ -132,3 +133,13 @@ def visualize_seed_expansion(image, pred, seed, pred_seed, scales, dims, vis_fol
     pltname = f"{vis_folder}/FORMULA_seed_expansion_{im_name}.png"
     Image.fromarray(image).save(pltname)
     print(f"Image saved at {pltname}.")
+
+def visualize_eigvec(eigvec, vis_folder, im_name, dim, scales, save=True):
+    """
+    Visualization of the second smallest eigvector
+    """
+    eigvec = scipy.ndimage.zoom(eigvec, scales, order=0, mode='nearest')
+    if save:
+        pltname = f"{vis_folder}/{im_name}_TokenCut_attn.jpg"
+        plt.imsave(fname=pltname, arr=eigvec, cmap='cividis')
+        print(f"Eigen attention saved at {pltname}.")

@@ -84,15 +84,10 @@ def FORMULA(feats,
         xy_kernel = np.multiply(x_gauss.T, x_gauss)
 
         fb = np.zeros(dims)
-        # print(xy_kernel.shape)
-        # print('#'*30)
-        # print(second_smallest_vec.shape)
 
         r_start, r_end = int(center_r - t / 2), int(center_r - t / 2) + t
         c_start, c_end = int(center_c - t / 2), int(center_c - t / 2) + t
 
-        # print(r_start, r_end, c_start, c_end)
-        # print(dims)
 
         if r_start < 0:
             r_start = 0

@@ -46,25 +46,6 @@ def FORMULA(feats, feats_init, dims, scales, init_image_size, k_patches=100):
     sorted_patches, scores = patch_scoring(A)
     sorted_patches_init, scores_init = patch_scoring(A_init)
 
-    # seed = torch.tensor([389]).cuda()
-    # seed = 389
-    # potentials = sorted_patches[:k_patches]
-    # similars = potentials[A[seed, potentials] > 0.0]
-    # M = torch.sum(A[similars, :], dim=0)
-
-    # pred, _ = detect_box([M],
-    #                      [seed],
-    #                      dims,
-    #                      scales=scales,
-    #                      initial_im_size=init_image_size[1:])
-
-    # cv.waitKey(0)
-    # cv.destroyAllWindows()
-
-    # return np.asarray(pred), A, scores, seed
-
-    # s, m = visualize_attn(M, similars, seed, dims, scales)
-
     # Select the initial seed
     # seed = sorted_patches[0]
     seed = sorted_patches_init[0]
@@ -87,25 +68,6 @@ def FORMULA(feats, feats_init, dims, scales, init_image_size, k_patches=100):
         similars = torch.cat(
             (potentials[A[seed, potentials] > 0.0], wax)).long()
         M = torch.sum(A[similars, :], dim=0)
-
-        # correl = M.reshape(dims[0], dims[1]).float()
-        # labeled_array, _ = scipy.ndimage.label(correl.cpu().numpy() > 0.0)
-
-        # cc = labeled_array[seedy, seedx]
-        # t, _ = np.where(labeled_array == cc)
-        # if len(t) > 0.85 * dims[0] * dims[1]:
-        #     _seed = [init_seed]
-        #     _M = [init_M]
-        #     break
-
-        # if _ == 1:
-        #     dis = visualize_attn(M, similars, seed, dims, scales)[1]
-        #     dis = np.hstack((masks, m, dis))
-        #     cv.imshow('...', dis)
-        #     # cv.imwrite('./1.png', dis)
-        #     cv.waitKey(0)
-        #     cv.destroyAllWindows()
-        #     exit(0)
 
         _seed.append(seed)
         _M.append(M)
@@ -193,7 +155,7 @@ def new_seed(M, seeds, dims):
 
     # t = int(np.sqrt(len(X)) * 0.5 / 2)
     t = 2
-    sigma = 0.1
+    sigma = 0.01
     new_seed_r = stats.truncnorm.rvs(-t / sigma,
                                      t / sigma,
                                      loc=center_r,
