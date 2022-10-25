@@ -105,10 +105,10 @@ The project is only free for academic research purposes, but needs authorization
 If you use our code/model/data, please cite our paper:
 
 ```
-@Article{,
+@Article{lin2022fomula,
   author  = {Zhiwei Lin and Zengyu Yang and Yongtao Wang},
-  title   = {},
-  journal = {arXiv preprint arXiv:},
+  title   = {Foreground Guidance and Multi-Layer Feature Fusion for Unsupervised Object Discovery with Transformers},
+  journal = {arXiv preprint arXiv:2210.13053},
   year    = {2022},
 }
 ```
