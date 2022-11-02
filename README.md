@@ -1,6 +1,6 @@
 ## Foreground Guidance and Multi-Layer Feature Fusion for Unsupervised Object Discovery with Transformers
 
-This is the official implementation of the [Foreground Guidance and Multi-Layer Feature Fusion for Unsupervised Object Discovery with Transformers](http://arxiv.org/abs/2210.13053)
+This is the official implementation of the [Foreground Guidance and Multi-Layer Feature Fusion for Unsupervised Object Discovery with Transformers](http://arxiv.org/abs/2210.13053) (WACV2023)
 
 <p align="center">
   <img src="pipeline.png" alt="pipeline" width="98%">
@@ -105,11 +105,11 @@ The project is only free for academic research purposes, but needs authorization
 If you use our code/model/data, please cite our paper:
 
 ```
-@Article{lin2022fomula,
-  author  = {Zhiwei Lin and Zengyu Yang and Yongtao Wang},
-  title   = {Foreground Guidance and Multi-Layer Feature Fusion for Unsupervised Object Discovery with Transformers},
-  journal = {arXiv preprint arXiv:2210.13053},
-  year    = {2022},
+@InProceedings{Zhiwei_2023_WACV,
+    author    = {Zhiwei Lin and Zengyu Yang and Yongtao Wang},
+    title     = {Foreground Guidance and Multi-Layer Feature Fusion for Unsupervised Object Discovery with Transformers},
+    booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+    year      = {2023}
 }
 ```
 
